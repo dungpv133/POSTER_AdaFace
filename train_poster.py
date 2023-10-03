@@ -65,6 +65,7 @@ def parse_args():
     parser.add_argument('--workers', default=2, type=int, help='Number of data loading workers (default: 4)')
     parser.add_argument('--epochs', type=int, default=300, help='Total training epochs.')
     parser.add_argument('--gpu', type=str, default='0,1', help='assign multi-gpus by comma concat')
+    parser.add_argument('--headtype', type=str, default='adaface', help='choose type of margin loss')
     return parser.parse_args()
 
 
@@ -100,7 +101,7 @@ def run_training():
         train_dataset = RafDataSet(datapath, train=True, transform=data_transforms, basic_aug=True)
         val_dataset = RafDataSet(datapath, train=False, transform=data_transforms_val)
         # model = pyramid_trans_expr(img_size=224, num_classes=num_classes, type=args.modeltype)
-        model = pyramid_trans_expr_adaface(img_size=224, num_classes=num_classes, type=args.modeltype)
+        model = pyramid_trans_expr_adaface(img_size=224, num_classes=num_classes, type=args.modeltype, head_type = arg.headtype)
 
     elif args.dataset == "affectnet":
         datapath = './data/AffectNet/'
