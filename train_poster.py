@@ -143,7 +143,11 @@ def run_training():
     # model = Networks.ResNet18_ARM___RAF()
 
     # model = torch.nn.DataParallel(model)
+    # model = model.cuda()
+
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = nn.DataParallel(model, device_ids=[0, 1])
+    model.to(device)
     model = model.cuda()
 
     print("batch_size:", args.batch_size)
