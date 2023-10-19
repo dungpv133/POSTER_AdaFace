@@ -520,7 +520,7 @@ def load_pretrained_weights(model, checkpoint):
     # new_state_dict.requires_grad = False
     model_dict.update(new_state_dict)
 
-    model.load_state_dict(model_dict)
+    model.load_state_dict(model_dict, strict = False)
     print('load_weight', len(matched_layers))
     return model
 
