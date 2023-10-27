@@ -155,9 +155,9 @@ def run_training():
     if args.checkpoint:
         print("Loading pretrained weights...", args.checkpoint)
         checkpoint = torch.load(args.checkpoint)
-        # model.load_state_dict(checkpoint["model_state_dict"], strict=False)
-        checkpoint = checkpoint["model_state_dict"]
-        model = load_pretrained_weights(model, checkpoint)
+        model.load_state_dict(checkpoint["model_state_dict"], strict=False)
+        # checkpoint = checkpoint["model_state_dict"]
+        # model = load_pretrained_weights(model, checkpoint)
 
     params = model.parameters()
     if args.optimizer == 'adamw':
