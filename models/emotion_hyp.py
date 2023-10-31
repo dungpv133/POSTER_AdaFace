@@ -183,7 +183,7 @@ class pyramid_trans_expr_adaface(nn.Module):
         self.ir_back = Backbone(50, 0.0, 'ir')
         # ir_checkpoint = torch.load('./models/pretrain/ir50.pth', map_location=lambda storage, loc: storage)
         # ir_checkpoint = ir_checkpoint["model"]
-        self.ir_back = load_pretrained_weights(self.ir_back, ir_checkpoint)
+        # self.ir_back = load_pretrained_weights(self.ir_back, ir_checkpoint)
 
         #pretrained supcon
         self.ir_back = load_supcon_weights(self.ir_back, 'ir_back', "/kaggle/input/model-supcon-150epochs/ckpt_epoch_150.pth")
