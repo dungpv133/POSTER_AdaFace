@@ -155,7 +155,7 @@ def run_training():
             iter_cnt += 1
             optimizer.zero_grad()
             imgs = imgs.cuda()
-            outputs, features = model(imgs)
+            outputs, features = model(imgs, targets)
             targets = targets.cuda()
 
             CE_loss = CE_criterion(outputs, targets)
@@ -165,7 +165,7 @@ def run_training():
             optimizer.first_step(zero_grad=True)
 
             # second forward-backward pass
-            outputs, features = model(imgs)
+            outputs, features = model(imgs, targets)
             CE_loss = CE_criterion(outputs, targets)
             lsce_loss = lsce_criterion(outputs, targets)
 
@@ -196,7 +196,7 @@ def run_training():
             bingo_cnt = 0
             model.eval()
             for batch_i, (imgs, targets) in enumerate(val_loader):
-                outputs, features = model(imgs.cuda())
+                outputs, features = model(imgs.cuda(), targets.cuda()
                 targets = targets.cuda()
 
                 CE_loss = CE_criterion(outputs, targets)
