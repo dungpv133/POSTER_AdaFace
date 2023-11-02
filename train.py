@@ -17,7 +17,7 @@ from sklearn.metrics import f1_score, confusion_matrix
 from time import time
 from utils import *
 from data_preprocessing.sam import SAM
-from models.emotion_hyp import pyramid_trans_expr
+from models.emotion_hyp import pyramid_trans_expr, pyramid_trans_expr_adaface
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -32,6 +32,7 @@ def parse_args():
     parser.add_argument('--workers', default=2, type=int, help='Number of data loading workers (default: 4)')
     parser.add_argument('--epochs', type=int, default=300, help='Total training epochs.')
     parser.add_argument('--gpu', type=str, default='0,1', help='assign multi-gpus by comma concat')
+    parser.add_argument('--datapath', type=str, default='/kaggle/input/rafdb-poster/raf-basic', help='dataset directory')
     return parser.parse_args()
 
 
@@ -62,11 +63,13 @@ def run_training():
 
     num_classes = 7
     if args.dataset == "rafdb":
-        datapath = './data/raf-basic/'
+        # datapath = './data/raf-basic/'
+        datapath = args.datapath
         num_classes = 7
         train_dataset = RafDataSet(datapath, train=True, transform=data_transforms, basic_aug=True)
         val_dataset = RafDataSet(datapath, train=False, transform=data_transforms_val)
-        model = pyramid_trans_expr(img_size=224, num_classes=num_classes, type=args.modeltype)
+        # model = pyramid_trans_expr(img_size=224, num_classes=num_classes, type=args.modeltype)
+        model = pyramid_trans_expr_adaface(img_size=224, num_classes=num_classes, type=args.modeltype, head_type = 'adaface', use_ada = False)
 
     elif args.dataset == "affectnet":
         datapath = './data/AffectNet/'
