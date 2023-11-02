@@ -67,6 +67,7 @@ def parse_args():
     parser.add_argument('--gpu', type=str, default='0,1', help='assign multi-gpus by comma concat')
     parser.add_argument('--headtype', type=str, default='adaface', help='choose type of margin loss')
     parser.add_argument('--datapath', type=str, default='/kaggle/input/rafdb-poster/raf-basic', help='dataset directory')
+    parser.add_argument('--marginloss', type=str, default='True', help='using margin based loss function')
     return parser.parse_args()
 
 
@@ -103,7 +104,10 @@ def run_training():
         train_dataset = RafDataSet(datapath, train=True, transform=data_transforms, basic_aug=True)
         val_dataset = RafDataSet(datapath, train=False, transform=data_transforms_val)
         # model = pyramid_trans_expr(img_size=224, num_classes=num_classes, type=args.modeltype)
-        model = pyramid_trans_expr_adaface(img_size=224, num_classes=num_classes, type=args.modeltype, head_type = args.headtype)
+        use_ada = False
+        if(args.marginloss == "True"):
+          use_ada = True
+        model = pyramid_trans_expr_adaface(img_size=224, num_classes=num_classes, type=args.modeltype, head_type = args.headtype, use_ada = use_ada)
 
     elif args.dataset == "affectnet":
         datapath = './data/AffectNet/'
