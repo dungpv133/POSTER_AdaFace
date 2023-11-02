@@ -107,7 +107,7 @@ def run_training():
         use_ada = False
         if(args.marginloss == "True"):
           use_ada = True
-        model = pyramid_trans_expr_adaface(img_size=224, num_classes=num_classes, type=args.modeltype, head_type = args.headtype, use_ada = False)
+        model = pyramid_trans_expr_adaface(img_size=224, num_classes=num_classes, type=args.modeltype, head_type = args.headtype, use_ada = True)
 
     elif args.dataset == "affectnet":
         datapath = './data/AffectNet/'
