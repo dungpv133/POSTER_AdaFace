@@ -196,7 +196,7 @@ def run_training():
             bingo_cnt = 0
             model.eval()
             for batch_i, (imgs, targets) in enumerate(val_loader):
-                outputs, features = model(imgs.cuda(), targets.cuda()
+                outputs, features = model(imgs.cuda(), targets.cuda())
                 targets = targets.cuda()
 
                 CE_loss = CE_criterion(outputs, targets)
