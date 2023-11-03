@@ -271,7 +271,8 @@ def run_training():
 
 
             # if val_acc > 0.907 and val_acc > best_acc:
-            if val_acc > 0.85 and val_acc > best_acc:
+            # if val_acc > 0.85 and val_acc > best_acc:
+            if i % 10 == 0 and val_acc > 0.82:
                 torch.save({'iter': i,
                             'model_state_dict': model.state_dict(),
                             'optimizer_state_dict': optimizer.state_dict(), },
