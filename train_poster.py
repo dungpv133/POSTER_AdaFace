@@ -271,12 +271,13 @@ def run_training():
 
 
             # if val_acc > 0.907 and val_acc > best_acc:
-            # if val_acc > 0.85 and val_acc > best_acc:
-            if val_acc > 0.65 and val_acc > best_acc:
+            if val_acc > 0.80 and val_acc > best_acc:
+            # if val_acc > 0.65 and val_acc > best_acc:
                 torch.save({'iter': i,
                             'model_state_dict': model.state_dict(),
                             'optimizer_state_dict': optimizer.state_dict(), },
-                           os.path.join('./checkpoint', "epoch" + str(i) + "_acc" + str(val_acc) + ".pth"))
+                           # os.path.join('./checkpoint', "epoch" + str(i) + "_acc" + str(val_acc) + ".pth"))
+                            os.path.join('./checkpoint', "poster_" + args.headtype + "_" + ".pth"))
                 print('Model saved.')
             if val_acc > best_acc:
                 best_acc = val_acc
