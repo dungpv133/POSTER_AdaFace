@@ -277,7 +277,7 @@ def run_training():
                             'model_state_dict': model.state_dict(),
                             'optimizer_state_dict': optimizer.state_dict(), },
                            # os.path.join('./checkpoint', "epoch" + str(i) + "_acc" + str(val_acc) + ".pth"))
-                            os.path.join('./checkpoint', "poster_" + args.headtype + "_" + ".pth"))
+                            os.path.join('./checkpoint', "poster_" + args.headtype + ".pth"))
                 print('Model saved.')
             if val_acc > best_acc:
                 best_acc = val_acc
