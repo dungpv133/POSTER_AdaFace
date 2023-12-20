@@ -74,7 +74,7 @@ def parse_args():
 
 
 
-sdef run_training():
+def run_training():
     args = parse_args()
     torch.manual_seed(123)
     
