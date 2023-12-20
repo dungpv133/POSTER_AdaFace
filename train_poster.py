@@ -6,6 +6,7 @@ import numpy as np
 import torch.utils.data as data
 from torchvision import transforms
 import os
+from matplotlib import pyplot as plt
 
 import torch
 import argparse
@@ -76,7 +77,8 @@ def parse_args():
 def run_training():
     args = parse_args()
     torch.manual_seed(123)
-
+    
+  
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu)
     print("Work on GPU: ", os.environ['CUDA_VISIBLE_DEVICES'])
 
@@ -188,6 +190,8 @@ def run_training():
 
 
     best_acc = 0
+    trainingEpoch_loss = []
+    validationEpoch_loss = []
     for i in range(1, args.epochs + 1):
         train_loss = 0.0
         correct_sum = 0
@@ -229,6 +233,8 @@ def run_training():
 
         train_acc = correct_sum.float() / float(train_dataset.__len__())
         train_loss = train_loss / iter_cnt
+
+        trainingEpoch_loss.append(train_loss)
         elapsed = (time() - start_time) / 60
 
         print('[Epoch %d] Train time:%.2f, Training accuracy:%.4f. Loss: %.3f LR:%.6f' %
@@ -250,6 +256,7 @@ def run_training():
                 cos_thetas, norms, embeddings, labels = model(imgs, targets)
                 CE_loss = CE_criterion(cos_thetas, targets)
                 # CE_loss = CE_criterion(outputs, targets)
+              
                 loss = CE_loss
 
                 val_loss += loss
@@ -261,6 +268,9 @@ def run_training():
                 gt_labels += targets.cpu().tolist()
 
             val_loss = val_loss / iter_cnt
+          
+            validationEpoch_loss.append(val_loss)
+          
             val_acc = bingo_cnt.float() / float(val_num)
             val_acc = np.around(val_acc.numpy(), 4)
             f1 = f1_score(pre_labels, gt_labels, average='macro')
@@ -283,6 +293,10 @@ def run_training():
                 best_acc = val_acc
                 print("best_acc:" + str(best_acc))
 
+  plt.plot(trainingEpoch_loss, label='train_loss')
+  plt.plot(validationEpoch_loss,label='val_loss')
+  plt.legend()
+  plt.show()
 
 if __name__ == "__main__":
     run_training()
