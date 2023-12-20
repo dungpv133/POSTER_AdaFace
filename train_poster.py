@@ -293,10 +293,10 @@ def run_training():
                 best_acc = val_acc
                 print("best_acc:" + str(best_acc))
 
-  plt.plot(trainingEpoch_loss, label='train_loss')
-  plt.plot(validationEpoch_loss,label='val_loss')
-  plt.legend()
-  plt.show()
+   plt.plot(trainingEpoch_loss, label='train_loss')
+   plt.plot(validationEpoch_loss,label='val_loss')
+   plt.legend()
+   plt.show()
 
 if __name__ == "__main__":
     run_training()
