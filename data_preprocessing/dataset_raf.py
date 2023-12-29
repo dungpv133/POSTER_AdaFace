@@ -31,7 +31,7 @@ class RafDataSet(data.Dataset):
         for f in file_names:    # use raf-db aligned images for training/testing
             f = f.split(".")[0]
             f = f + "_aligned.jpg"
-            path = os.path.join(self.raf_path, 'Image/aligned', f)
+            path = os.path.join(self.raf_path, 'Image/original', f)
             self.file_paths.append(path)
 
         self.basic_aug = basic_aug
