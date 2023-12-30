@@ -220,7 +220,7 @@ def run_training():
             i, val_acc, val_loss, f1, total_socre))
 
 
-            if val_acc > 0.907 and val_acc > best_acc:
+            if i % 20 == 0 or (val_acc > 0.7 and val_acc > best_acc):
                 torch.save({'iter': i,
                             'model_state_dict': model.state_dict(),
                             'optimizer_state_dict': optimizer.state_dict(), },
