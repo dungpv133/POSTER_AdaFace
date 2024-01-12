@@ -30,7 +30,7 @@ class RafDataSet(data.Dataset):
         self.file_paths = []
         for f in file_names:    # use raf-db aligned images for training/testing
             f = f.split(".")[0]
-            f = f + ".jpg"
+            f = f + "_aligned.jpg"
             path = os.path.join(self.raf_path, 'Image/aligned', f)
             self.file_paths.append(path)
 
@@ -76,4 +76,3 @@ def add_gaussian_noise(image_array, mean=0.0, var=30):
 
 def flip_image(image_array):
     return cv2.flip(image_array, 1)
-
