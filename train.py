@@ -17,13 +17,13 @@ from sklearn.metrics import f1_score, confusion_matrix
 from time import time
 from utils import *
 from data_preprocessing.sam import SAM
-from models.emotion_hyp import pyramid_trans_expr, pyramid_trans_expr_adaface
+from models.emotion_hyp import pyramid_trans_expr
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, default='rafdb', help='dataset')
     parser.add_argument('-c', '--checkpoint', type=str, default=None, help='Pytorch checkpoint file path')
-    parser.add_argument('--batch_size', type=int, default=16, help='Batch size.')
+    parser.add_argument('--batch_size', type=int, default=200, help='Batch size.')
     parser.add_argument('--val_batch_size', type=int, default=32, help='Batch size for validation.')
     parser.add_argument('--modeltype', type=str, default='large', help='small or base or large')
     parser.add_argument('--optimizer', type=str, default="adam", help='Optimizer, adam or sgd.')
@@ -32,7 +32,6 @@ def parse_args():
     parser.add_argument('--workers', default=2, type=int, help='Number of data loading workers (default: 4)')
     parser.add_argument('--epochs', type=int, default=300, help='Total training epochs.')
     parser.add_argument('--gpu', type=str, default='0,1', help='assign multi-gpus by comma concat')
-    parser.add_argument('--datapath', type=str, default='/kaggle/input/rafdb-poster/raf-basic', help='dataset directory')
     return parser.parse_args()
 
 
@@ -63,13 +62,11 @@ def run_training():
 
     num_classes = 7
     if args.dataset == "rafdb":
-        # datapath = './data/raf-basic/'
-        datapath = args.datapath
+        datapath = './data/raf-basic/'
         num_classes = 7
         train_dataset = RafDataSet(datapath, train=True, transform=data_transforms, basic_aug=True)
         val_dataset = RafDataSet(datapath, train=False, transform=data_transforms_val)
         model = pyramid_trans_expr(img_size=224, num_classes=num_classes, type=args.modeltype)
-        # model = pyramid_trans_expr_adaface(img_size=224, num_classes=num_classes, type=args.modeltype, head_type = 'adaface', use_ada = False)
 
     elif args.dataset == "affectnet":
         datapath = './data/AffectNet/'
@@ -155,7 +152,7 @@ def run_training():
             iter_cnt += 1
             optimizer.zero_grad()
             imgs = imgs.cuda()
-            outputs, features = model(imgs, targets)
+            outputs, features = model(imgs)
             targets = targets.cuda()
 
             CE_loss = CE_criterion(outputs, targets)
@@ -165,7 +162,7 @@ def run_training():
             optimizer.first_step(zero_grad=True)
 
             # second forward-backward pass
-            outputs, features = model(imgs, targets)
+            outputs, features = model(imgs)
             CE_loss = CE_criterion(outputs, targets)
             lsce_loss = lsce_criterion(outputs, targets)
 
@@ -196,7 +193,7 @@ def run_training():
             bingo_cnt = 0
             model.eval()
             for batch_i, (imgs, targets) in enumerate(val_loader):
-                outputs, features = model(imgs.cuda(), targets.cuda())
+                outputs, features = model(imgs.cuda())
                 targets = targets.cuda()
 
                 CE_loss = CE_criterion(outputs, targets)
@@ -220,7 +217,7 @@ def run_training():
             i, val_acc, val_loss, f1, total_socre))
 
 
-            if i % 20 == 0 or (val_acc > 0.7 and val_acc > best_acc):
+            if val_acc > 0.907 and val_acc > best_acc:
                 torch.save({'iter': i,
                             'model_state_dict': model.state_dict(),
                             'optimizer_state_dict': optimizer.state_dict(), },
