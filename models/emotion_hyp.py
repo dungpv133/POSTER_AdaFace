@@ -167,11 +167,11 @@ class pyramid_trans_expr_adaface(nn.Module):
         self.num_classes = num_classes
 
         self.face_landback = MobileFaceNet([112, 112],136)
-        # face_landback_checkpoint = torch.load('./models/pretrain/mobilefacenet_model_best.pth.tar', map_location=lambda storage, loc: storage)
-        # self.face_landback.load_state_dict(face_landback_checkpoint['state_dict'])
+        face_landback_checkpoint = torch.load('./models/pretrain/mobilefacenet_model_best.pth.tar', map_location=lambda storage, loc: storage)
+        self.face_landback.load_state_dict(face_landback_checkpoint['state_dict'])
 
         #pretrained supcon
-        self.face_landback = load_supcon_weights(self.face_landback, 'face_landback', "/kaggle/input/model-supcon-150epochs/ckpt_epoch_150.pth")
+        # self.face_landback = load_supcon_weights(self.face_landback, 'face_landback', "/kaggle/input/model-supcon-150epochs/ckpt_epoch_150.pth")
         # self.face_landback = load_supcon_weights(self.face_landback, 'face_landback', "/kaggle/input/supcon-fer2013/supcon-fer2013.pth")
 
 
@@ -184,15 +184,15 @@ class pyramid_trans_expr_adaface(nn.Module):
         self.ir_back = Backbone(50, 0.0, 'ir')
         ir_checkpoint = torch.load('./models/pretrain/ir50.pth', map_location=lambda storage, loc: storage)
         # ir_checkpoint = ir_checkpoint["model"]
-        # self.ir_back = load_pretrained_weights(self.ir_back, ir_checkpoint)
+        self.ir_back = load_pretrained_weights(self.ir_back, ir_checkpoint)
 
         #pretrained supcon
-        self.ir_back = load_supcon_weights(self.ir_back, 'ir_back', "/kaggle/input/model-supcon-150epochs/ckpt_epoch_150.pth")
+        # self.ir_back = load_supcon_weights(self.ir_back, 'ir_back', "/kaggle/input/model-supcon-150epochs/ckpt_epoch_150.pth")
         # self.ir_back = load_supcon_weights(self.ir_back, 'ir_back', "/kaggle/input/supcon-fer2013/supcon-fer2013.pth")
 
         self.ir_layer = nn.Linear(1024,512)
         # pretrained supcon
-        self.ir_layer = load_supcon_weights(self.ir_layer, 'ir_layer', "/kaggle/input/model-supcon-150epochs/ckpt_epoch_150.pth")
+        # self.ir_layer = load_supcon_weights(self.ir_layer, 'ir_layer', "/kaggle/input/model-supcon-150epochs/ckpt_epoch_150.pth")
         # self.ir_layer = load_supcon_weights(self.ir_layer, 'ir_layer', "/kaggle/input/supcon-fer2013/supcon-fer2013.pth")
 
         # for param in self.ir_back.parameters():
