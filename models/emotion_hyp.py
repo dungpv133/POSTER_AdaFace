@@ -213,9 +213,9 @@ class pyramid_trans_expr_adaface(nn.Module):
             self.head = build_head(head_type=head_type,
                                    embedding_size=512,
                                    class_num=self.num_classes,
-                                   m=0.4,
+                                   m=0.6,
                                    h=0.333,
-                                   t_alpha=1.0,
+                                   t_alpha=0.9,
                                    s=64.)
         else:
             self.head = ClassificationHead(input_dim=512, target_dim=self.num_classes)
