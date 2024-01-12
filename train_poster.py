@@ -221,7 +221,7 @@ def run_training():
             CE_loss = CE_criterion(cos_thetas, targets)
             lsce_loss = lsce_criterion(cos_thetas, targets)
 
-            loss = 2 * lsce_loss + CE_loss
+            loss = lsce_loss + 2 * CE_loss
             loss.backward() # make sure to do a full forward pass
             optimizer.second_step(zero_grad=True)
 
@@ -282,7 +282,7 @@ def run_training():
 
             # if val_acc > 0.907 and val_acc > best_acc:
             # if val_acc > 0.80 and val_acc > best_acc:
-            if i % 20 == 0 or (val_acc > 0.65 and val_acc > best_acc):
+            if i % 20 == 0 or (val_acc > 0.8 and val_acc > best_acc):
                 torch.save({'iter': i,
                             'model_state_dict': model.state_dict(),
                             'optimizer_state_dict': optimizer.state_dict(), },
@@ -293,6 +293,12 @@ def run_training():
                 best_acc = val_acc
                 print("best_acc:" + str(best_acc))
 
+    with open('valid_loss.txt', 'w') as f:
+      for line in validationEpoch_loss:
+          f.write(f"{line}\n")
+    with open('train_loss.txt', 'w') as f:
+      for line in validationEpoch_loss:
+          f.write(f"{line}\n")
     plt.plot(trainingEpoch_loss, label='train_loss')
     plt.plot(validationEpoch_loss,label='val_loss')
     plt.legend()
