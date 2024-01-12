@@ -211,7 +211,7 @@ def run_training():
             cos_thetas, norms, embeddings, labels = model(imgs, targets)
             CE_loss = CE_criterion(cos_thetas, targets)
             lsce_loss = lsce_criterion(cos_thetas, targets)
-            loss = lsce_loss + 0.5 * CE_loss
+            loss = 2 * lsce_loss +CE_loss
             loss.backward()
             optimizer.first_step(zero_grad=True)
 
@@ -221,7 +221,7 @@ def run_training():
             CE_loss = CE_criterion(cos_thetas, targets)
             lsce_loss = lsce_criterion(cos_thetas, targets)
 
-            loss = lsce_loss + 0.5 * CE_loss
+            loss = 2 * lsce_loss + CE_loss
             loss.backward() # make sure to do a full forward pass
             optimizer.second_step(zero_grad=True)
 
