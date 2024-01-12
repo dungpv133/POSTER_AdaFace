@@ -289,6 +289,13 @@ def run_training():
                            # os.path.join('./checkpoint', "epoch" + str(i) + "_acc" + str(val_acc) + ".pth"))
                             os.path.join('./checkpoint', "poster_" + args.headtype + ".pth"))
                 print('Model saved.')
+                with open('valid_loss.txt', 'w') as f:
+                  for line in validationEpoch_loss:
+                      f.write(f"{line}\n")
+                with open('train_loss.txt', 'w') as f:
+                  for line in validationEpoch_loss:
+                      f.write(f"{line}\n")
+                print("Loss saved")
             if val_acc > best_acc:
                 best_acc = val_acc
                 print("best_acc:" + str(best_acc))
