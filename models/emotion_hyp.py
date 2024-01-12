@@ -195,11 +195,11 @@ class pyramid_trans_expr_adaface(nn.Module):
         self.ir_layer = load_supcon_weights(self.ir_layer, 'ir_layer', "/kaggle/input/model-supcon-150epochs/ckpt_epoch_150.pth")
         # self.ir_layer = load_supcon_weights(self.ir_layer, 'ir_layer', "/kaggle/input/supcon-fer2013/supcon-fer2013.pth")
 
-        for param in self.ir_back.parameters():
-            param.requires_grad = False
+        # for param in self.ir_back.parameters():
+        #     param.requires_grad = False
 
-        for param in self.ir_layer.parameters():
-            param.requires_grad = False
+        # for param in self.ir_layer.parameters():
+        #     param.requires_grad = False
         #############################################################3
 
         self.pyramid_fuse = HyVisionTransformer(in_chans=49, q_chanel = 49, embed_dim=512,
