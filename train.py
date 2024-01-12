@@ -62,7 +62,7 @@ def run_training():
 
     num_classes = 7
     if args.dataset == "rafdb":
-        datapath = './data/raf-basic/'
+        datapath = '/kaggle/input/rafdb-poster/raf-basic'
         num_classes = 7
         train_dataset = RafDataSet(datapath, train=True, transform=data_transforms, basic_aug=True)
         val_dataset = RafDataSet(datapath, train=False, transform=data_transforms_val)
